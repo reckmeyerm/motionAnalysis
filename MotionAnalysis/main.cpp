@@ -1,65 +1,9 @@
+#define DEBUG false
+
 #include <iostream>
 
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
-
-//#define THRESHOLD 20
-//
-//using namespace std;
-//using namespace cv;
-//
-//int main(void) {
-//	Mat image;
-//	Mat grayImage;
-//	Mat backgroundImage;
-//	Mat *diffImage = NULL;
-//
-//	int rows = 0;
-//	int cols = 0;
-//
-//	VideoCapture stream(0);
-//
-//	stream.read(image);
-//	cvtColor(image, grayImage, CV_BGR2GRAY);
-//	rows = grayImage.rows;
-//	cols = grayImage.cols;
-//
-//	backgroundImage = grayImage.clone();
-//	
-//	while (true) {
-//		stream.read(image);
-//		cvtColor(image, grayImage, CV_BGR2GRAY);
-//		
-//		if (diffImage != NULL) {
-//			delete diffImage;
-//		}
-//		diffImage = new Mat(rows, cols, CV_8U);
-//
-//		for (unsigned int i = 0; i < (unsigned int)(rows*cols); i++) {
-//			int difference = abs(grayImage.data[i] - backgroundImage.data[i]);
-//
-//			if (difference > THRESHOLD) {
-//				diffImage->data[i] = 255;
-//			}
-//			else {
-//				diffImage->data[i] = 0;
-//			}
-//		}
-//
-//
-//
-//		imshow("diffImage", *diffImage);
-//		//imshow("actImage", grayImage);
-//		//imshow("bgImage", backgroundImage);
-//		waitKey(1);
-//
-//		backgroundImage = grayImage.clone();
-//	}
-//
-//
-//
-//	return 0;
-//}
 
 #include "VideoStream.h"
 #include "DifferenceImage.h"
@@ -78,8 +22,11 @@ int main(void) {
 	Mat *diffImage = NULL;
 	Mat *htImage = NULL;
 
-	//namedWindow("actImage", CV_WINDOW_AUTOSIZE);
-	//namedWindow("bgImage", CV_WINDOW_AUTOSIZE);
+	if (DEBUG == true) {
+		namedWindow("actImage", CV_WINDOW_AUTOSIZE);
+		namedWindow("bgImage", CV_WINDOW_AUTOSIZE);
+	}
+
 	namedWindow("diffImage", CV_WINDOW_AUTOSIZE);
 	namedWindow("heatImage", CV_WINDOW_AUTOSIZE);
 
@@ -94,8 +41,11 @@ int main(void) {
 		heatImage->generate(diffImage);
 		htImage = heatImage->get();
 
-		//imshow("actImage", *image);
-		//imshow("bgImage", *image);
+		if (DEBUG == true) {
+			imshow("actImage", *image);
+			imshow("bgImage", *image);
+		}
+
 		imshow("diffImage", *diffImage);
 		imshow("heatImage", *htImage);
 		waitKey(1);
